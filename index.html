@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Portfolio Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #001603, #03050a);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto auto;
+            gap: 20px;
+        }
+
+        .header {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .portfolio-overview {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            align-items: center;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .positive { color: #4ade80; }
+        .negative { color: #f87171; }
+        .neutral { color: #94a3b8; }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin-top: 20px;
+        }
+
+        .positions-grid {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .position-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .position-symbol {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .refresh-btn {
+            background: linear-gradient(45deg, #6366f1, #8b5cf6);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 20px auto;
+            display: block;
+        }
+
+        .refresh-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .sentiment-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 12px;
+            margin: 8px 0;
+            border-left: 4px solid;
+        }
+
+        .sentiment-positive { border-left-color: #4ade80; }
+        .sentiment-negative { border-left-color: #f87171; }
+        .sentiment-neutral { border-left-color: #94a3b8; }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .portfolio-overview {
+                grid-template-columns: 1fr;
+            }
+            
+            .position-item {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            opacity: 0.6;
+            font-style: italic;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #fff, #e2e8f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #e2e8f0;
+        }
+
+        .last-updated {
+            opacity: 0.7;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="header">
+            <h1>Trading Portfolio Dashboard</h1>
+            <p>Reddit Sentiment-Based Trading System</p>
+            <button class="refresh-btn" onclick="refreshData()">Refresh Data</button>
+            <div class="last-updated" id="lastUpdated">Last updated: Never</div>
+        </div>
+
+        <div class="card portfolio-overview">
+            <div class="stat-box">
+                <div class="stat-value neutral" id="totalBalance">$0.00</div>
+                <div class="stat-label">Portfolio Balance</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value neutral" id="buyingPower">$0.00</div>
+                <div class="stat-label">Buying Power</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value neutral" id="dayPL">$0.00</div>
+                <div class="stat-label">Day P&L</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value neutral" id="totalPL">$0.00</div>
+                <div class="stat-label">Total P&L</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Portfolio Performance</h2>
+            <div class="chart-container">
+                <canvas id="portfolioChart"></canvas>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Current Positions</h2>
+            <div id="positionsContainer" class="positions-grid">
+                <div class="loading">Loading positions...</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Recent Sentiment Analysis</h2>
+            <div id="sentimentContainer">
+                <div class="loading">Loading sentiment data...</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Account Information</h2>
+            <div id="accountInfo">
+                <div class="loading">Loading account info...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let portfolioChart;
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD'
+            }).format(amount);
+        }
+
+        function formatPercentage(value) {
+            return (value * 100).toFixed(2) + '%';
+        }
+
+        function updatePortfolioOverview(data) {
+            document.getElementById('totalBalance').textContent = formatCurrency(data.account.portfolio_value);
+            document.getElementById('buyingPower').textContent = formatCurrency(data.account.buying_power);
+            
+            // Calculate day P&L (mock calculation)
+            const dayPL = data.positions.reduce((sum, pos) => sum + pos.unrealized_pl, 0);
+            const totalPL = dayPL; // Simplified for demo
+            
+            document.getElementById('dayPL').textContent = formatCurrency(dayPL);
+            document.getElementById('totalPL').textContent = formatCurrency(totalPL);
+            
+            // Update colors based on P&L
+            const dayPLElement = document.getElementById('dayPL');
+            const totalPLElement = document.getElementById('totalPL');
+            
+            dayPLElement.className = `stat-value ${dayPL >= 0 ? 'positive' : 'negative'}`;
+            totalPLElement.className = `stat-value ${totalPL >= 0 ? 'positive' : 'negative'}`;
+        }
+
+        function updatePositions(positions) {
+            const container = document.getElementById('positionsContainer');
+            
+            if (positions.length === 0) {
+                container.innerHTML = '<div class="loading">No positions found</div>';
+                return;
+            }
+            
+            container.innerHTML = positions.map(pos => `
+                <div class="position-item">
+                    <div class="position-symbol">${pos.symbol}</div>
+                    <div>Qty: ${pos.qty}</div>
+                    <div>Value: ${formatCurrency(pos.market_value)}</div>
+                    <div class="${pos.unrealized_pl >= 0 ? 'positive' : 'negative'}">
+                        ${formatCurrency(pos.unrealized_pl)} (${formatPercentage(pos.unrealized_plpc)})
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateSentiment(sentiment) {
+            const container = document.getElementById('sentimentContainer');
+            const items = Object.entries(sentiment).map(([ticker, data]) => {
+                const sentimentClass = data.score > 0.1 ? 'positive' : 
+                                     data.score < -0.1 ? 'negative' : 'neutral';
+                
+                return `
+                    <div class="sentiment-item sentiment-${sentimentClass}">
+                        <strong>${ticker}</strong> - Score: ${data.score.toFixed(2)} 
+                        (${data.post_count} posts, ${data.sentiment})
+                    </div>
+                `;
+            }).join('');
+            
+            container.innerHTML = items || '<div class="loading">No sentiment data available</div>';
+        }
+
+        function updateAccountInfo(account) {
+            const container = document.getElementById('accountInfo');
+            container.innerHTML = `
+                <div style="display: grid; gap: 10px;">
+                    <div><strong>Cash:</strong> ${formatCurrency(account.cash)}</div>
+                    <div><strong>Day Trade Buying Power:</strong> ${formatCurrency(account.day_trade_buying_power)}</div>
+                    <div><strong>Pattern Day Trader:</strong> ${account.pattern_day_trader ? 'Yes' : 'No'}</div>
+                    <div><strong>Account Status:</strong> ${account.account_blocked ? 'Blocked' : 'Active'}</div>
+                    <div><strong>Trading Status:</strong> ${account.trading_blocked ? 'Blocked' : 'Active'}</div>
+                    <div><strong>Account Created:</strong> ${new Date(account.created_at).toLocaleDateString()}</div>
+                </div>
+            `;
+        }
+
+        function updateChart(historicalData) {
+            const ctx = document.getElementById('portfolioChart').getContext('2d');
+            
+            if (portfolioChart) {
+                portfolioChart.destroy();
+            }
+            
+            portfolioChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: historicalData.map(d => new Date(d.date).toLocaleDateString()),
+                    datasets: [{
+                        label: 'Portfolio Value',
+                        data: historicalData.map(d => d.value),
+                        borderColor: '#4ade80',
+                        backgroundColor: 'rgba(74, 222, 128, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#e2e8f0'
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#e2e8f0',
+                                callback: function(value) {
+                                    return formatCurrency(value);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        async function refreshData() {
+            try {
+                // Show loading state
+                document.getElementById('lastUpdated').textContent = 'Updating...';
+
+                // Fetch all data concurrently
+                const [accountData, positionsData, sentimentData] = await Promise.all([
+                    fetchAccountData(),
+                    fetchPositions(),
+                    fetchSentiment()
+                ]);
+
+                // Create historical data from positions (simplified version)
+                const historicalData = [{
+                    date: new Date(),
+                    value: parseFloat(accountData.portfolio_value)
+                }];
+
+                // Update all components with real data
+                updatePortfolioOverview({ account: accountData, positions: positionsData });
+                updatePositions(positionsData);
+                updateSentiment(sentimentData);
+                updateAccountInfo(accountData);
+                updateChart(historicalData);
+
+                // Update timestamp
+                document.getElementById('lastUpdated').textContent = 
+                    `Last updated: ${new Date().toLocaleTimeString()}`;
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                document.getElementById('lastUpdated').textContent = 
+                    `Update failed: ${error.message}`;
+            }
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', async function() {
+            await refreshData();
+            
+            // Auto-refresh every 5 minutes
+            setInterval(refreshData, 5 * 60 * 1000);
+        });
+
+        // API integration:
+        
+        async function fetchAccountData() {
+            const response = await fetch('http://localhost:5000/api/account');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return await response.json();
+        }
+
+        async function fetchPositions() {
+            const response = await fetch('http://localhost:5000/api/positions');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return await response.json();
+        }
+
+        async function fetchSentiment() {
+            const response = await fetch('http://localhost:5000/api/sentiment');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return await response.json();
+        }
+    
+    </script>
+</body>
+</html>

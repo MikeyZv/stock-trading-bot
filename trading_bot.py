@@ -105,6 +105,58 @@ def get_grok_sentiment(text, max_retries=3):
                         "compound": 0.0, 
                         "confidence": 0.0,
                         "ticker": None}
+            
+# Function to check if current post has been processed before (or add it if action is 'add')
+def manage_post_history(post_id=None, post_title=None, action='check'):
+    """
+    Manage processed post history in a JSON file
+    action: 'check' to verify if post exists, 'add' to add new post
+    Returns: True if post exists, False if not
+    """
+    history_file = 'processed_posts.json'
+    
+    # Load existing history
+    try:
+        with open(history_file, 'r') as f:
+            history = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        history = {'posts': {}}
+    
+    if action == 'check':
+        return post_id in history['posts']
+    
+    elif action == 'add':
+        history['posts'][post_id] = {
+            'title': post_title,
+            'processed_date': datetime.datetime.now(datetime.timezone.utc).isoformat()
+        }
+        with open(history_file, 'w') as f:
+            json.dump(history, f, indent=4)
+        return True
+
+# Function to clean up old posts from history
+def clean_post_history(days_to_keep=7):
+    """Remove posts older than specified days from history"""
+    history_file = 'processed_posts.json'
+    try:
+        with open(history_file, 'r') as f:
+            history = json.load(f)
+        
+        cutoff_date = datetime.datetime.now(datetime.timezone.utc) - timedelta(days=days_to_keep)
+        current_posts = history['posts']
+        
+        # Filter out old posts
+        history['posts'] = {
+            post_id: data 
+            for post_id, data in current_posts.items()
+            if datetime.fromisoformat(data['processed_date']) > cutoff_date
+        }
+        
+        with open(history_file, 'w') as f:
+            json.dump(history, f, indent=4)
+            
+    except (FileNotFoundError, json.JSONDecodeError):
+        pass
 
 # Function to get sentiment from r/WallStreetBets
 def get_reddit_sentiment(subreddit, hours, limit):
@@ -118,11 +170,16 @@ def get_reddit_sentiment(subreddit, hours, limit):
     ticker_posts = {}
 
     # Time filter: only posts from the last `hours`
-    time_threshold = datetime.utcnow() - timedelta(hours=hours)
+    time_threshold = datetime.datetime.now(datetime.timezone.utc) - timedelta(hours=hours)
 
     processed_posts = 0
     for post in posts:
         try:
+            # Check if post was already processed
+            if manage_post_history(post.id, action='check'):
+                print(f"Skipping already processed post: {post.title[:50]}...")
+                continue
+
             post_time = datetime.fromtimestamp(post.created_utc)
             if post_time < time_threshold:
                 continue
@@ -169,6 +226,8 @@ def get_reddit_sentiment(subreddit, hours, limit):
                     'ticker': ticker,
                 })
 
+            # Add post to history after processing
+            manage_post_history(post.id, post.title, action='add')
             processed_posts += 1
             
             # Print progress
@@ -264,14 +323,3 @@ def execute_trades_based_on_sentiment(sentiment_data):
         except Exception as e:
             print(f"Error executing trade for {ticker}: {e}")
 
-# if __name__ == "__main__":
-#     #Get sentiment data (adjust params as needed)
-#     sentiment = get_reddit_sentiment('wallstreetbets', 24, 10)
-    
-#     # Print sentiment for reference
-#     print("\nAverage Sentiment:")
-#     for ticker, data in sentiment.items():
-#         print(f"{ticker}: score={data['score']:.2f}, posts={data['post_count']}")
-    
-#     # Execute trades
-#     execute_trades_based_on_sentiment(sentiment)

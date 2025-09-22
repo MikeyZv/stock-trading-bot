@@ -1,1 +1,76 @@
-{"posts": ["1nm0a5q", "1nl8km0", "1nl4g6m", "1nkow7c", "1nkmfdb", "1nkf4y4", "1nkats2", "1njsjhv", "1njcfnv", "1niuwss"], "created_date": "2025-09-22T20:17:52.014678+00:00", "last_modified": "2025-09-22T20:19:00.041722+00:00"}
+{
+    "posts": [
+        {
+            "post_id": "1nnywbe",
+            "ticker": "SEI",
+            "score": 0.8,
+            "title": "The AI Data Center Play For The Love of Your Bags",
+            "date posted": "2025-09-22T21:17:32+00:00"
+        },
+        {
+            "post_id": "1nnxhgg",
+            "ticker": "ASPI",
+            "score": 0.7,
+            "title": "ASP Isotopes ($ASPI): building a moat in specialty isotope enrichment to fuel data centers, quantum ",
+            "date posted": "2025-09-22T20:22:48+00:00"
+        },
+        {
+            "post_id": "1nm0a5q",
+            "ticker": "MU",
+            "score": 0.8,
+            "title": "Huge Micron Bet",
+            "date posted": "2025-09-20T14:54:22+00:00"
+        },
+        {
+            "post_id": "1nl8km0",
+            "ticker": "DUOL",
+            "score": 0.7,
+            "title": "Duolingo DD",
+            "date posted": "2025-09-19T16:39:52+00:00"
+        },
+        {
+            "post_id": "1nl4g6m",
+            "ticker": "TTD",
+            "score": 0.6,
+            "title": "$TTD DD: The Tendie Desk",
+            "date posted": "2025-09-19T14:03:11+00:00"
+        },
+        {
+            "post_id": "1nkow7c",
+            "ticker": "GAP",
+            "score": 0.7,
+            "title": "[GAP]PING UP",
+            "date posted": "2025-09-19T00:19:37+00:00"
+        },
+        {
+            "post_id": "1nkmfdb",
+            "ticker": "PACS",
+            "score": 0.8,
+            "title": "$PACS - The DD No One Asked For But You\u2019re Getting Anyway - Easiest 3x Bagger Minimum",
+            "date posted": "2025-09-18T22:28:38+00:00"
+        },
+        {
+            "post_id": "1nkf4y4",
+            "ticker": "SNAP",
+            "score": 0.8,
+            "title": "$SNAP - Quick update. Rolled half my $7c -> $10c",
+            "date posted": "2025-09-18T17:47:16+00:00"
+        },
+        {
+            "post_id": "1nkats2",
+            "ticker": "UAMY",
+            "score": 0.8,
+            "title": "YOLO into $UAMY monopoly",
+            "date posted": "2025-09-18T15:07:19+00:00"
+        },
+        {
+            "post_id": "1njsjhv",
+            "ticker": "NUVB",
+            "score": 0.8,
+            "title": "NUVB - 100k YOLO",
+            "date posted": "2025-09-17T23:20:51+00:00"
+        }
+    ],
+    "created_date": "2025-09-22T21:35:13.466629+00:00",
+    "last_modified": "2025-09-22T21:36:00.057066+00:00"
+}

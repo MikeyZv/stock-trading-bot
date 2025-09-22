@@ -1,7 +1,6 @@
 import re
 import json
-from datetime import datetime, timedelta, timezone
-import os
+from datetime import datetime, timezone
 
 # Function to clean text for sentiment analysis
 def clean_text(text):
@@ -38,13 +37,19 @@ def check_post_history(post_id):
     return post_id in data.get("posts", [])
 
 # Function to add a post ID to history
-def add_post_to_history(post_id):
+def add_post_to_history(post, score, ticker):
     """Add a post ID to the history"""
     history_file = 'processed_posts.json'
     with open(history_file, 'r') as f:
         data = json.load(f)
-    if post_id not in data.get("posts", []):
-        data["posts"].append(post_id)
+    if post.id not in data.get("posts", []):
+        data["posts"].append({
+            'post_id': post.id, 
+            'ticker': ticker, 
+            'score': round(score, 1), 
+            'title': post.title[:100], 
+            'date posted': datetime.fromtimestamp(post.created_utc, tz=timezone.utc).isoformat()
+            })
         data["last_modified"] = datetime.now(timezone.utc).isoformat()
         with open(history_file, 'w') as f:
-            json.dump(data, f)
+            json.dump(data, f, indent=4)

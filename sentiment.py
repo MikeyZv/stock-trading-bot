@@ -117,7 +117,7 @@ def get_reddit_sentiment(subreddit, hours, limit):
                     'ticker': ticker,
                 })
             
-            add_post_to_history(post.id)
+            add_post_to_history(post, weighted_score, grok_ticker.upper())
             num_posts += 1
             
             # Print progress

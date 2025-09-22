@@ -261,7 +261,7 @@
             document.getElementById('totalBalance').textContent = formatCurrency(data.account.portfolio_value);
             document.getElementById('buyingPower').textContent = formatCurrency(data.account.buying_power);
             
-            // Calculate day P&L (mock calculation)
+            // Calculate day P&L
             const dayPL = data.positions.reduce((sum, pos) => sum + pos.unrealized_pl, 0);
             const totalPL = dayPL; // Simplified for demo
             
@@ -425,7 +425,6 @@
         });
 
         // API integration:
-        
         async function fetchAccountData() {
             const response = await fetch('http://localhost:5000/api/account');
             if (!response.ok) {

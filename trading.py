@@ -3,6 +3,7 @@ from alpaca.trading.requests import MarketOrderRequest
 from alpaca.trading.enums import OrderSide, TimeInForce
 from alpaca.data.requests import StockLatestQuoteRequest
 from clients import trading_client, stock_quote_client
+import time
 
 # Returns trading account information
 account = trading_client.get_account()
@@ -13,6 +14,18 @@ def check_stock_price(ticker):
     latest_symbol_quote = stock_quote_client.get_stock_latest_quote(request_params)
     return latest_symbol_quote[ticker].ask_price
 
+# Function to allocate capital based on sentiment score
+def allocate_capital_based_on_sentiment(avg_score, cash):
+    """Allocate capital based on sentiment score"""
+    if abs(avg_score) > 0.49 and abs(avg_score) < 0.65:
+        return cash * 0.01
+    elif abs(avg_score) > 0.65 and abs(avg_score) < 0.80:
+        return cash * 0.03
+    elif abs(avg_score) > 0.8:
+        return cash * 0.06
+    else:
+        return 0
+
 # Function to execute trades based on sentiment
 def execute_trades_based_on_sentiment(sentiment_data):
     """Submit buy/sell orders via Alpaca based on average sentiment scores"""
@@ -21,26 +34,14 @@ def execute_trades_based_on_sentiment(sentiment_data):
     for ticker, data in sentiment_data.items():
         avg_score = data['score']
         print(f"Evaluating {ticker}: avg_score = {avg_score}")
-        # (NEED) check if duplicate post since last query
 
-        # Allocate capital according to sentiment
-        #     0.49-0.65 allocate 3%
-        #     0.65-0.80 allocate 6%
-        #     0.80-1.00 allocate 10%
         cash = float(account.non_marginable_buying_power)
         price = check_stock_price(ticker)
 
         if price == 0:
             price = 69.69  # Testing fallback price
         
-        if abs(avg_score) > 0.49 and abs(avg_score) < 0.65:
-            cash_allocated = cash * 0.03
-        elif abs(avg_score) > 0.65 and abs(avg_score) < 0.80:
-            cash_allocated = cash * 0.06
-        elif abs(avg_score) > 0.8:
-            cash_allocated = cash * 0.1
-        else:
-            cash_allocated = 0
+        cash_allocated = allocate_capital_based_on_sentiment(avg_score, cash)
 
         if cash_allocated != 0:
             qty = math.floor(cash_allocated / price)

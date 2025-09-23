@@ -13,12 +13,12 @@ def main():
 
     # Get sentiment data
     sentiment = get_reddit_sentiment('wallstreetbets', 72, 10)
-    print(sentiment)
-    # print("\nFinal sentiment data:")
-    # print(json.dumps(sentiment, indent=2))
     
-    # # Execute trades based on sentiment
-    # execute_trades_based_on_sentiment(sentiment)
+    print("\nFinal sentiment data:")
+    print(json.dumps(sentiment, indent=2))
+    
+    # Execute trades based on sentiment
+    execute_trades_based_on_sentiment(sentiment)
 
 if __name__ == "__main__":
     main()

@@ -34,7 +34,10 @@ def check_post_history(post_id):
     history_file = 'processed_posts.json'
     with open(history_file, 'r') as f:
         data = json.load(f)
-    return post_id in data.get("posts", [])
+    for post in data.get("posts", []):
+        if post.get("post_id") == post_id:
+            return True
+    return False
 
 # Function to add a post ID to history
 def add_post_to_history(post, score, ticker):

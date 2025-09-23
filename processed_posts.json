@@ -1,18 +1,25 @@
 {
     "posts": [
         {
-            "post_id": "1nnywbe",
-            "ticker": "SEI",
+            "post_id": "1nok0rp",
+            "ticker": "RCAT",
             "score": 0.8,
-            "title": "The AI Data Center Play For The Love of Your Bags",
-            "date posted": "2025-09-22T21:17:32+00:00"
+            "title": "RedCat because I LOVE kitty \ud83d\udc31",
+            "date posted": "2025-09-23T15:11:18+00:00"
         },
         {
-            "post_id": "1nnxhgg",
-            "ticker": "ASPI",
-            "score": 0.7,
-            "title": "ASP Isotopes ($ASPI): building a moat in specialty isotope enrichment to fuel data centers, quantum ",
-            "date posted": "2025-09-22T20:22:48+00:00"
+            "post_id": "1noj238",
+            "ticker": "CROX",
+            "score": 0.5,
+            "title": "Calls on CROX",
+            "date posted": "2025-09-23T14:34:28+00:00"
+        },
+        {
+            "post_id": "1noi16i",
+            "ticker": "AMD",
+            "score": 0.3,
+            "title": "AMD - 180 before earnings (Dream DD)",
+            "date posted": "2025-09-23T13:54:02+00:00"
         },
         {
             "post_id": "1nm0a5q",
@@ -38,7 +45,7 @@
         {
             "post_id": "1nkow7c",
             "ticker": "GAP",
-            "score": 0.7,
+            "score": 0.8,
             "title": "[GAP]PING UP",
             "date posted": "2025-09-19T00:19:37+00:00"
         },
@@ -62,15 +69,8 @@
             "score": 0.8,
             "title": "YOLO into $UAMY monopoly",
             "date posted": "2025-09-18T15:07:19+00:00"
-        },
-        {
-            "post_id": "1njsjhv",
-            "ticker": "NUVB",
-            "score": 0.8,
-            "title": "NUVB - 100k YOLO",
-            "date posted": "2025-09-17T23:20:51+00:00"
         }
     ],
-    "created_date": "2025-09-22T21:35:13.466629+00:00",
-    "last_modified": "2025-09-22T21:36:00.057066+00:00"
+    "created_date": "2025-09-23T18:40:18.998050+00:00",
+    "last_modified": "2025-09-23T18:41:09.195134+00:00"
 }

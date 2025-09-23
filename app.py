@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, render_template
 from flask_cors import CORS
-from trading_bot import trading_client, get_reddit_sentiment
+from clients import trading_client
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -36,9 +37,42 @@ def get_positions():
 
 @app.route('/api/sentiment')
 def get_sentiment():
-    # Run your sentiment analysis
-    sentiment = get_reddit_sentiment('wallstreetbets', 24, 10)
-    return jsonify(sentiment)
+    try:
+        # Read sentiment data from processed_posts.json
+        with open('processed_posts.json', 'r') as f:
+            data = json.load(f)
+        
+        # Extract sentiment data from posts
+        sentiment_data = {}
+        
+        for post in data.get('posts', []):
+            ticker = post.get('ticker')
+            score = post.get('score', 0)
+            
+            if ticker:
+                if ticker not in sentiment_data:
+                    sentiment_data[ticker] = {
+                        'score': 0,
+                        'post_count': 0,
+                        'posts': []
+                    }
+                
+                # Add post data
+                sentiment_data[ticker]['posts'].append({
+                    'title': post.get('title', ''),
+                    'score': score,
+                    'timestamp': post.get('timestamp', '')
+                })
+                
+                # Update aggregated data
+                sentiment_data[ticker]['post_count'] += 1
+                current_total = sentiment_data[ticker]['score'] * (sentiment_data[ticker]['post_count'] - 1)
+                sentiment_data[ticker]['score'] = (current_total + score) / sentiment_data[ticker]['post_count']
+        
+        return jsonify(sentiment_data)
+        
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        return jsonify({'error': 'Sentiment data not available'}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

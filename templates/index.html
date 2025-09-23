@@ -184,6 +184,7 @@
             font-size: 0.9em;
             margin-top: 10px;
         }
+
     </style>
 </head>
 <body>
@@ -235,12 +236,6 @@
             </div>
         </div>
 
-        <div class="card">
-            <h2>Account Information</h2>
-            <div id="accountInfo">
-                <div class="loading">Loading account info...</div>
-            </div>
-        </div>
     </div>
 
     <script>
@@ -304,27 +299,13 @@
                 
                 return `
                     <div class="sentiment-item sentiment-${sentimentClass}">
-                        <strong>${ticker}</strong> - Score: ${data.score.toFixed(2)} 
-                        (${data.post_count} posts, ${data.sentiment})
+                        <strong>${ticker}</strong> - Score: ${data.score.toFixed(2)},
+                        ${data.post_count} posts, ${sentimentClass}, "${data.posts[0].title}"
                     </div>
                 `;
             }).join('');
             
             container.innerHTML = items || '<div class="loading">No sentiment data available</div>';
-        }
-
-        function updateAccountInfo(account) {
-            const container = document.getElementById('accountInfo');
-            container.innerHTML = `
-                <div style="display: grid; gap: 10px;">
-                    <div><strong>Cash:</strong> ${formatCurrency(account.cash)}</div>
-                    <div><strong>Day Trade Buying Power:</strong> ${formatCurrency(account.day_trade_buying_power)}</div>
-                    <div><strong>Pattern Day Trader:</strong> ${account.pattern_day_trader ? 'Yes' : 'No'}</div>
-                    <div><strong>Account Status:</strong> ${account.account_blocked ? 'Blocked' : 'Active'}</div>
-                    <div><strong>Trading Status:</strong> ${account.trading_blocked ? 'Blocked' : 'Active'}</div>
-                    <div><strong>Account Created:</strong> ${new Date(account.created_at).toLocaleDateString()}</div>
-                </div>
-            `;
         }
 
         function updateChart(historicalData) {
@@ -403,7 +384,6 @@
                 updatePortfolioOverview({ account: accountData, positions: positionsData });
                 updatePositions(positionsData);
                 updateSentiment(sentimentData);
-                updateAccountInfo(accountData);
                 updateChart(historicalData);
 
                 // Update timestamp

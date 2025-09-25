@@ -1,37 +1,44 @@
 {
     "posts": [
         {
+            "post_id": "1np10yv",
+            "ticker": "TTD",
+            "score": 0.8,
+            "title": "Just bought TTD",
+            "date posted": "2025-09-24T02:47:55+00:00"
+        },
+        {
             "post_id": "1nok0rp",
             "ticker": "RCAT",
-            "score": 0.8,
+            "score": 0.9,
             "title": "RedCat because I LOVE kitty \ud83d\udc31",
             "date posted": "2025-09-23T15:11:18+00:00"
         },
         {
             "post_id": "1noj238",
             "ticker": "CROX",
-            "score": 0.5,
+            "score": 0.6,
             "title": "Calls on CROX",
             "date posted": "2025-09-23T14:34:28+00:00"
         },
         {
             "post_id": "1noi16i",
             "ticker": "AMD",
-            "score": 0.3,
+            "score": 0.5,
             "title": "AMD - 180 before earnings (Dream DD)",
             "date posted": "2025-09-23T13:54:02+00:00"
         },
         {
             "post_id": "1nm0a5q",
             "ticker": "MU",
-            "score": 0.8,
+            "score": 0.9,
             "title": "Huge Micron Bet",
             "date posted": "2025-09-20T14:54:22+00:00"
         },
         {
             "post_id": "1nl8km0",
             "ticker": "DUOL",
-            "score": 0.7,
+            "score": 0.8,
             "title": "Duolingo DD",
             "date posted": "2025-09-19T16:39:52+00:00"
         },
@@ -52,25 +59,11 @@
         {
             "post_id": "1nkmfdb",
             "ticker": "PACS",
-            "score": 0.8,
+            "score": 0.7,
             "title": "$PACS - The DD No One Asked For But You\u2019re Getting Anyway - Easiest 3x Bagger Minimum",
             "date posted": "2025-09-18T22:28:38+00:00"
-        },
-        {
-            "post_id": "1nkf4y4",
-            "ticker": "SNAP",
-            "score": 0.8,
-            "title": "$SNAP - Quick update. Rolled half my $7c -> $10c",
-            "date posted": "2025-09-18T17:47:16+00:00"
-        },
-        {
-            "post_id": "1nkats2",
-            "ticker": "UAMY",
-            "score": 0.8,
-            "title": "YOLO into $UAMY monopoly",
-            "date posted": "2025-09-18T15:07:19+00:00"
         }
     ],
-    "created_date": "2025-09-23T18:40:18.998050+00:00",
-    "last_modified": "2025-09-23T18:41:09.195134+00:00"
+    "created_date": "2025-09-24T19:52:47.235912+00:00",
+    "last_modified": "2025-09-24T19:53:38.846630+00:00"
 }

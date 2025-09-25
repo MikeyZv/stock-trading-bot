@@ -90,7 +90,7 @@ def get_reddit_sentiment(subreddit, hours, limit):
             if grok_ticker and grok_ticker.upper() not in ['NULL', 'NONE', '']:
                 tickers.add(grok_ticker.upper())
             
-            if not tickers:
+            if not tickers or grok_ticker.upper() == "RYCEY":
                 continue
             
             compound_score = sentiment_data["compound"]

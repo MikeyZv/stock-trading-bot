@@ -1,8 +1,9 @@
 import math
+import requests
 from alpaca.trading.requests import MarketOrderRequest
 from alpaca.trading.enums import OrderSide, TimeInForce
-from alpaca.data.requests import StockLatestQuoteRequest
-from clients import trading_client, stock_quote_client
+from clients import trading_client
+from config import ALPHA_VANTAGE_API_KEY
 import time
 
 # Returns trading account information
@@ -10,9 +11,10 @@ account = trading_client.get_account()
 
 # Function to check stock prices 
 def check_stock_price(ticker):
-    request_params = StockLatestQuoteRequest(symbol_or_symbols=ticker)
-    latest_symbol_quote = stock_quote_client.get_stock_latest_quote(request_params)
-    return latest_symbol_quote[ticker].ask_price
+    url = f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={ticker}&apikey={ALPHA_VANTAGE_API_KEY}'
+    r = requests.get(url)
+    data = r.json()
+    return float(data["Global Quote"]["05. price"]) if "Global Quote" in data else 0
 
 # Function to allocate capital based on sentiment score
 def allocate_capital_based_on_sentiment(avg_score, cash):
@@ -38,14 +40,14 @@ def execute_trades_based_on_sentiment(sentiment_data):
         cash = float(account.non_marginable_buying_power)
         price = check_stock_price(ticker)
 
-        if price == 0:
-            price = 69.69  # Testing fallback price
-        
         cash_allocated = allocate_capital_based_on_sentiment(avg_score, cash)
 
         if cash_allocated != 0:
             qty = math.floor(cash_allocated / price)
-
+        
+        print(cash_allocated)
+        print(qty)
+        print(price)
         try:
             if qty > 0:
                 if avg_score < 0:

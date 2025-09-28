@@ -1,0 +1,158 @@
+{
+    "OKLO": {
+        "score": 0.7200000000000001,
+        "post_count": 1,
+        "posts": [
+            {
+                "title": "Upcoming OKLO Catalysts That Could Push It to $200+",
+                "sentiment": "positive",
+                "score": 0.8,
+                "confidence": 0.9,
+                "post_id": "1nrvnxd"
+            }
+        ]
+    },
+    "PATH": {
+        "score": 0.48,
+        "post_count": 1,
+        "posts": [
+            {
+                "title": "$PATH's Mammoth Run - Productize Your Workforce Away. 38k in Calls",
+                "sentiment": "positive",
+                "score": 0.6,
+                "confidence": 0.8,
+                "post_id": "1nql21w"
+            }
+        ]
+    },
+    "NBIS": {
+        "score": 0.765,
+        "post_count": 1,
+        "posts": [
+            {
+                "title": "$750k in NBIS, Nezuko Body Pillow Formation, $150+ PT",
+                "sentiment": "positive",
+                "score": 0.85,
+                "confidence": 0.9,
+                "post_id": "1nqjmwv"
+            }
+        ]
+    },
+    "INTC": {
+        "score": 0.81,
+        "post_count": 1,
+        "posts": [
+            {
+                "title": "Single Cell Analyst couldn't be more wrong about INTEL and AI",
+                "sentiment": "positive",
+                "score": 0.9,
+                "confidence": 0.9,
+                "post_id": "1nqd7cr"
+            }
+        ]
+    },
+    "NEXT": {
+        "score": 0.7200000000000001,
+        "post_count": 1,
+        "posts": [
+            {
+                "title": "This stock is NEXT - DD",
+                "sentiment": "positive",
+                "score": 0.8,
+                "confidence": 0.9,
+                "post_id": "1nptl01"
+            }
+        ]
+    },
+    "NVTS": {
+        "score": 0.675,
+        "post_count": 1,
+        "posts": [
+            {
+                "title": "NVTS Navitas Semiconductor Run Incoming (NVDA Blackwell)",
+                "sentiment": "positive",
+                "score": 0.75,
+                "confidence": 0.9,
+                "post_id": "1npnj6l"
+            }
+        ]
+    },
+    "TTD": {
+        "score": 0.7200000000000001,
+        "post_count": 1,
+        "posts": [
+            {
+                "title": "Just bought TTD",
+                "sentiment": "positive",
+                "score": 0.8,
+                "confidence": 0.9,
+                "post_id": "1np10yv"
+            }
+        ]
+    },
+    "RYCEY": {
+        "score": 0.63,
+        "post_count": 1,
+        "posts": [
+            {
+                "title": "Don't Sleep on RYCEY, Uranium + Space!?",
+                "sentiment": "positive",
+                "score": 0.7,
+                "confidence": 0.9,
+                "post_id": "1np04ds"
+            }
+        ]
+    },
+    "RCAT": {
+        "score": 0.765,
+        "post_count": 1,
+        "posts": [
+            {
+                "title": "RedCat because I LOVE kitty \ud83d\udc31",
+                "sentiment": "positive",
+                "score": 0.85,
+                "confidence": 0.9,
+                "post_id": "1nok0rp"
+            }
+        ]
+    },
+    "CROX": {
+        "score": 0.52,
+        "post_count": 1,
+        "posts": [
+            {
+                "title": "Calls on CROX",
+                "sentiment": "positive",
+                "score": 0.65,
+                "confidence": 0.8,
+                "post_id": "1noj238"
+            }
+        ]
+    },
+    "AMD": {
+        "score": 0.5850000000000001,
+        "post_count": 1,
+        "posts": [
+            {
+                "title": "AMD - 180 before earnings (Dream DD)",
+                "sentiment": "positive",
+                "score": 0.65,
+                "confidence": 0.9,
+                "post_id": "1noi16i"
+            }
+        ]
+    },
+    "JPM": {
+        "score": -0.4,
+        "post_count": 1,
+        "posts": [
+            {
+                "title": "Church of Dimon - Valhalla or Brimstone",
+                "sentiment": "negative",
+                "score": -0.5,
+                "confidence": 0.8,
+                "post_id": "1nqrrn6"
+            }
+        ]
+    }
+}

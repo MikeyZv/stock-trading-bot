@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta, timezone
 from xai_sdk.chat import user, system
 from clients import xai_client, reddit
-from utils import clean_text, calculate_average_sentiment, check_post_history, add_post_to_history
+from utils import clean_text, check_post_history
 import json
 import time
 
@@ -49,49 +49,41 @@ def get_grok_sentiment(text, max_retries=3):
                         "ticker": None}
 
 # Function to get sentiment from r/WallStreetBets
-def get_reddit_sentiment(subreddit, hours, limit):
+def get_reddit_sentiment(subreddit, limit, file):
     """Analyze sentiment from Reddit posts using xAI Grok"""
     print(f"Fetching sentiment from r/{subreddit}...")
     
     subreddit_obj = reddit.subreddit(subreddit)
     posts = list(subreddit_obj.search(f"flair:'DD'", sort='new', time_filter="week", limit=limit))
-    sentiment_scores = {}
-    post_count = {}
-    ticker_posts = {}
 
     # Time filter: only posts from the last `hours`
     time_threshold = datetime.now(timezone.utc) - timedelta(hours=hours)
     num_posts = 0
+
+    # Time complexity: O(n) where n is number of posts
     for post in posts:
         try:
             # Check if post already processed
-            if check_post_history(post.id):
+            if check_post_history(post.id, file):
                 print(f"Skipping already processed post: {post.id} - {post.title}")
                 continue
-
-            # Check post age
-            # post_time = datetime.fromtimestamp(post.created_utc, tz=timezone.utc)
-            # if post_time < time_threshold:
-            #     print(f"Skipping old post: {post.id} - {post.title}")
-            #     continue
 
             # Clean and combine title and body text
             full_text = clean_text(post.title + ' ' + post.selftext)
 
             # Perform sentiment analysis using Grok API first
-            print(f"Analyzing post using Grok 3 Mini: {post.title}")
+            print(f"Analyzing post with Grok 3 Mini: {post.title}")
             sentiment_data = get_grok_sentiment(full_text)
             
             # Get tickers from Grok analysis
             grok_ticker = sentiment_data.get("ticker")
-            
-            # Combine ticker
-            tickers = set()
-            if grok_ticker and grok_ticker.upper() not in ['NULL', 'NONE', '']:
-                tickers.add(grok_ticker.upper())
-            
-            if not tickers or grok_ticker.upper() == "RYCEY":
+
+            # If Grok didn't find a ticker, skip this post
+            if not grok_ticker:
                 continue
+            
+            # Capitalize ticker
+            grok_ticker = grok_ticker.upper()
             
             compound_score = sentiment_data["compound"]
             confidence = sentiment_data.get("confidence", 1.0)
@@ -99,25 +91,51 @@ def get_reddit_sentiment(subreddit, hours, limit):
             # Weight the sentiment by confidence
             weighted_score = compound_score * confidence
 
-            for ticker in tickers:
-                # Create empty data entries if ticker not seen before
-                if ticker not in sentiment_scores:
-                    sentiment_scores[ticker] = []
-                    post_count[ticker] = 0
-                    ticker_posts[ticker] = []
+            # Buy/sell stock based on sentiment
 
-                # Add to data to ticker
-                sentiment_scores[ticker].append(weighted_score)
-                post_count[ticker] += 1
-                ticker_posts[ticker].append({
+            # Append individual post data to file
+            try:
+                # Read existing data
+                try:
+                    with open(file, 'r') as f:
+                        existing_data = json.load(f)
+                except (FileNotFoundError, json.JSONDecodeError):
+                    existing_data = {}
+                
+                # Add new post data to existing structure
+                if grok_ticker not in existing_data:
+                    existing_data[grok_ticker] = {
+                        'score': 0,
+                        'post_count': 0,
+                        'posts': []
+                    }
+                
+                # Append the new post
+                existing_data[grok_ticker]['posts'].append({
                     'title': post.title[:100],
                     'sentiment': sentiment_data['sentiment'],
                     'score': compound_score,
                     'confidence': confidence,
-                    'ticker': ticker,
+                    'post_id': post.id
                 })
-            
-            add_post_to_history(post, weighted_score, grok_ticker.upper())
+                
+                # Update count and IDs
+                existing_data[grok_ticker]['post_count'] += 1
+
+                # Recalculate average score
+                if existing_data[grok_ticker]['score'] == 0:
+                    existing_data[grok_ticker]['score'] = weighted_score
+                else:
+                    total_score = sum(p['score'] for p in existing_data[grok_ticker]['posts'])
+                    existing_data[grok_ticker]['score'] = round(total_score / existing_data[grok_ticker]['post_count'], 2)
+                
+                # Write back to file
+                with open(file, 'w') as f:
+                    json.dump(existing_data, f, indent=4)
+                    
+            except Exception as e:
+                print(f"Error writing to file: {e}")
+
             num_posts += 1
             
             # Print progress
@@ -130,5 +148,5 @@ def get_reddit_sentiment(subreddit, hours, limit):
         except Exception as e:
             print(f"Error processing post: {e}")
             continue
-    
-    return calculate_average_sentiment(sentiment_scores, ticker_posts, post_count)
+
+    print(f"Completed sentiment analysis for {num_posts} posts.")

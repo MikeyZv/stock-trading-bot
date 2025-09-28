@@ -1,0 +1,218 @@
+{
+    "PATH": {
+        "score": 0.48,
+        "post_count": 1,
+        "post_ids": [
+            "1nql21w"
+        ],
+        "posts": [
+            {
+                "title": "$PATH's Mammoth Run - Productize Your Workforce Away. 38k in Calls",
+                "sentiment": "positive",
+                "score": 0.6,
+                "confidence": 0.8,
+                "ticker": "PATH"
+            }
+        ]
+    },
+    "NBIS": {
+        "score": 0.765,
+        "post_count": 1,
+        "post_ids": [
+            "1nqjmwv"
+        ],
+        "posts": [
+            {
+                "title": "$750k in NBIS, Nezuko Body Pillow Formation, $150+ PT",
+                "sentiment": "positive",
+                "score": 0.85,
+                "confidence": 0.9,
+                "ticker": "NBIS"
+            }
+        ]
+    },
+    "INTC": {
+        "score": 0.8075,
+        "post_count": 1,
+        "post_ids": [
+            "1nqd7cr"
+        ],
+        "posts": [
+            {
+                "title": "Single Cell Analyst couldn't be more wrong about INTEL and AI",
+                "sentiment": "positive",
+                "score": 0.85,
+                "confidence": 0.95,
+                "ticker": "INTC"
+            }
+        ]
+    },
+    "NEXT": {
+        "score": 0.7200000000000001,
+        "post_count": 1,
+        "post_ids": [
+            "1nptl01"
+        ],
+        "posts": [
+            {
+                "title": "This stock is NEXT - DD",
+                "sentiment": "positive",
+                "score": 0.8,
+                "confidence": 0.9,
+                "ticker": "NEXT"
+            }
+        ]
+    },
+    "NVTS": {
+        "score": 0.595,
+        "post_count": 1,
+        "post_ids": [
+            "1npnj6l"
+        ],
+        "posts": [
+            {
+                "title": "NVTS Navitas Semiconductor Run Incoming (NVDA Blackwell)",
+                "sentiment": "positive",
+                "score": 0.7,
+                "confidence": 0.85,
+                "ticker": "NVTS"
+            }
+        ]
+    },
+    "TTD": {
+        "score": 0.64,
+        "post_count": 2,
+        "post_ids": [
+            "1np10yv",
+            "1nl4g6m"
+        ],
+        "posts": [
+            {
+                "title": "Just bought TTD",
+                "sentiment": "positive",
+                "score": 0.8,
+                "confidence": 0.9,
+                "ticker": "TTD"
+            },
+            {
+                "title": "$TTD DD: The Tendie Desk",
+                "sentiment": "positive",
+                "score": 0.7,
+                "confidence": 0.8,
+                "ticker": "TTD"
+            }
+        ]
+    },
+    "RYCEY": {
+        "score": 0.7200000000000001,
+        "post_count": 1,
+        "post_ids": [
+            "1np04ds"
+        ],
+        "posts": [
+            {
+                "title": "Don't Sleep on RYCEY, Uranium + Space!?",
+                "sentiment": "positive",
+                "score": 0.8,
+                "confidence": 0.9,
+                "ticker": "RYCEY"
+            }
+        ]
+    },
+    "RCAT": {
+        "score": 0.765,
+        "post_count": 1,
+        "post_ids": [
+            "1nok0rp"
+        ],
+        "posts": [
+            {
+                "title": "RedCat because I LOVE kitty \ud83d\udc31",
+                "sentiment": "positive",
+                "score": 0.85,
+                "confidence": 0.9,
+                "ticker": "RCAT"
+            }
+        ]
+    },
+    "CROX": {
+        "score": 0.5599999999999999,
+        "post_count": 1,
+        "post_ids": [
+            "1noj238"
+        ],
+        "posts": [
+            {
+                "title": "Calls on CROX",
+                "sentiment": "positive",
+                "score": 0.7,
+                "confidence": 0.8,
+                "ticker": "CROX"
+            }
+        ]
+    },
+    "AMD": {
+        "score": 0.42,
+        "post_count": 1,
+        "post_ids": [
+            "1noi16i"
+        ],
+        "posts": [
+            {
+                "title": "AMD - 180 before earnings (Dream DD)",
+                "sentiment": "positive",
+                "score": 0.6,
+                "confidence": 0.7,
+                "ticker": "AMD"
+            }
+        ]
+    },
+    "MU": {
+        "score": 0.765,
+        "post_count": 1,
+        "post_ids": [
+            "1nm0a5q"
+        ],
+        "posts": [
+            {
+                "title": "Huge Micron Bet",
+                "sentiment": "positive",
+                "score": 0.85,
+                "confidence": 0.9,
+                "ticker": "MU"
+            }
+        ]
+    },
+    "DUOL": {
+        "score": 0.7200000000000001,
+        "post_count": 1,
+        "post_ids": [
+            "1nl8km0"
+        ],
+        "posts": [
+            {
+                "title": "Duolingo DD",
+                "sentiment": "positive",
+                "score": 0.8,
+                "confidence": 0.9,
+                "ticker": "DUOL"
+            }
+        ]
+    },
+    "GAP": {
+        "score": 0.765,
+        "post_count": 1,
+        "post_ids": [
+            "1nkow7c"
+        ],
+        "posts": [
+            {
+                "title": "[GAP]PING UP",
+                "sentiment": "positive",
+                "score": 0.85,
+                "confidence": 0.9,
+                "ticker": "GAP"
+            }
+        ]
+    }
+}

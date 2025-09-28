@@ -16,6 +16,13 @@ def check_stock_price(ticker):
     data = r.json()
     return float(data["Global Quote"]["05. price"]) if "Global Quote" in data else 0
 
+# Function to check stock exchange
+def check_stock_exchange(ticker):
+    url = f'https://www.alphavantage.co/query?function=OVERVIEW&symbol={ticker}&apikey={ALPHA_VANTAGE_API_KEY}'
+    r = requests.get(url)
+    data = r.json()
+    return data["Exchange"] if "Exchange" in data else "N/A"
+
 # Function to allocate capital based on sentiment score
 def allocate_capital_based_on_sentiment(avg_score, cash):
     """Allocate capital based on sentiment score"""
@@ -33,6 +40,7 @@ def execute_trades_based_on_sentiment(sentiment_data):
     """Submit buy/sell orders via Alpaca based on average sentiment scores"""
     print("Executing trades based on sentiment...")
     
+    # Loop through sentiment data and execute trades
     for ticker, data in sentiment_data.items():
         avg_score = data['score']
         print(f"Evaluating {ticker}: avg_score = {avg_score}")
@@ -40,14 +48,16 @@ def execute_trades_based_on_sentiment(sentiment_data):
         cash = float(account.non_marginable_buying_power)
         price = check_stock_price(ticker)
 
+        # Skip if price is 0 or exchange is N/A
+        if price == 0 or check_stock_exchange(ticker) == "N/A":
+            print(f"Skipping {ticker}: Unable to fetch stock price or exchange.")
+            continue
+        
         cash_allocated = allocate_capital_based_on_sentiment(avg_score, cash)
 
         if cash_allocated != 0:
             qty = math.floor(cash_allocated / price)
-        
-        print(cash_allocated)
-        print(qty)
-        print(price)
+
         try:
             if qty > 0:
                 if avg_score < 0:
